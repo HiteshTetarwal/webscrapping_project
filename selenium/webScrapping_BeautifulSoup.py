@@ -11,6 +11,8 @@ driver = webdriver.Chrome(options=options)
 base_url = 'https://www.overdrive.com/subjects/biography-autobiography?page='
 page_count = 5
 
+start_time = time.time()
+
 
 books_data = []
 for page in range(1, page_count + 1):
@@ -29,3 +31,14 @@ for page in range(1, page_count + 1):
         books_data.append([book_title, book_author])
 
 driver.quit()
+
+csv_filename = 'books_data.csv'
+with open(csv_filename, 'w', newline='', encoding='utf-8') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(['Title', 'Author'])
+    writer.writerows(books_data)
+
+end_time = time.time()
+elapsed_time = end_time - start_time
+print(f"Scraping completed in {elapsed_time} seconds.")
+print(f"Scraped book titles and authors have been saved to '{csv_filename}'.")
